@@ -3,13 +3,13 @@ import { Inter } from 'next/font/google'
 import Head from "next/head";
 import Box from "@mui/material/Box";
 import Sidebar from '@/components/Sidebar';
-import { io } from "socket.io-client";
-const socket = io("http://localhost:8000/");
-var Id = "";
-socket.on("connect", () => {
-  Id = `${socket.id}`;
-  console.log(`you connected with id=${socket.id}`);
-});
+// import { io } from "socket.io-client";
+// const socket = io("http://localhost:8000/");
+// var Id = "";
+// socket.on("connect", () => {
+//   Id = `${socket.id}`;
+//   console.log(`you connected with id=${socket.id}`);
+// });
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
@@ -22,7 +22,7 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-          <Sidebar userId={Id} />
+          <Sidebar />
       </div>
     </>
   );
