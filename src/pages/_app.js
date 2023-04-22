@@ -1,7 +1,7 @@
-import Login from '@/components/Login'
-import '@/styles/globals.css'
+import Login from "@/components/Login";
+import "@/styles/globals.css";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from '../../firebaseconfig';
+import { auth } from "../../utils/firebaseconfig";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
@@ -22,10 +22,9 @@ export default function App({ Component, pageProps }) {
       </Box>
     );
   }
-  if(!user)
-  {
-    return (<Login/>)
+  if (!user) {
+    return <Login />;
   }
-  return <Component {...pageProps} />
+  return <Component {...pageProps} />;
   // return <Login/>
 }

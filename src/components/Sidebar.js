@@ -7,7 +7,7 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import { Avatar } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { getRedirectResult, signOut } from "firebase/auth";
-import { auth, db } from "../../firebaseconfig";
+import { auth, db } from "../../utils/firebaseconfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { collection } from "firebase/firestore";
@@ -26,15 +26,15 @@ const Sidebar = () => {
   // console.log(snapshot);
   //  let chatList =[];
   const chats = snapshot?.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-  console.log(chats)
+  console.log(chats);
   //  console.log(chatList2)
   //   for (let index = 0; index < 30; index++) {
   //     chatList.push(<Chat />);
   //   }
-  const router=useRouter()
-  const redirect=(id)=>{
-    router.push(`/chat/${id}`)
-  } 
+  const router = useRouter();
+  const redirect = (id) => {
+    router.push(`/chat/${id}`);
+  };
   // const chatExists=email=chatList?.find(chat=>(chat.users.includes(user.email)&&chat.users.includes(email)))
 
   const chatList = () => {
@@ -45,17 +45,17 @@ const Sidebar = () => {
       chats
         ?.filter((chat) => chat.users.includes(user.email))
         .map((chat) => (
-            <Box
-              key={Math.random()}
-              onClick={() => redirect(chat.id)}
-              className="flex w-full h-16 rounded-md rounded-l-3xl m-2  items-center gap-3 justify-start hover:bg-slate-200 active:bg-slate-400"
-            >
-              <Avatar className="bg-slate-300 w-6 h-6 m-2" />
-              <h2 className="lg:overflow-hidden sm:overflow-x-scroll md:overflow-x-scroll">
-                {/* {chat.users} */}
-                {getOtherEmail(chat.users, user)}
-              </h2>
-            </Box>
+          <Box
+            key={Math.random()}
+            onClick={() => redirect(chat.id)}
+            className="flex w-full h-16 rounded-md rounded-l-3xl m-2  items-center gap-3 justify-start hover:bg-slate-200 active:bg-slate-400"
+          >
+            <Avatar className="bg-slate-300 w-6 h-6 m-2" />
+            <h2 className="lg:overflow-hidden sm:overflow-x-scroll md:overflow-x-scroll">
+              {/* {chat.users} */}
+              {getOtherEmail(chat.users, user)}
+            </h2>
+          </Box>
         ))
       // </ul>
     );
@@ -135,7 +135,6 @@ const Sidebar = () => {
         </Box>
       </div>
       <Box className="h-5/6 overflow-y-scroll pl-3 overflow-x-hidden border-2 flex flex-col px-2 justify-start items-center">
-
         {chatList()}
       </Box>
     </div>

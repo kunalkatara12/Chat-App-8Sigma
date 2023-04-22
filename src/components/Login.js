@@ -12,20 +12,20 @@ import IconButton from "@mui/material/IconButton";
 import GoogleIcon from "@mui/icons-material/Google";
 import { Google } from "@mui/icons-material";
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
- import { auth } from "../../firebaseconfig";
+import { auth } from "../../utils/firebaseconfig";
 function ModeToggle() {
-    const { mode, setMode } = useColorScheme();
-    const [mounted, setMounted] = React.useState(false);
-    
-    // necessary for server-side rendering
-    // because mode is undefined on the server
-   
-    React.useEffect(() => {
-        setMounted(true);
-    }, []);
-    if (!mounted) {
-        return null;
-    }
+  const { mode, setMode } = useColorScheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  // necessary for server-side rendering
+  // because mode is undefined on the server
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <Button
@@ -40,7 +40,7 @@ function ModeToggle() {
 }
 
 export default function App() {
-     const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
+  const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
   return (
     <CssVarsProvider>
       <main className="w-full h-screen">
@@ -96,11 +96,18 @@ export default function App() {
             Don&apos;t have an account?
           </Typography>
           <div className="text-center">Or</div>
-    <Box className="text-center">
-      <Button onClick={()=>signInWithGoogle("",{prompt:"select_account"})} className="bg-blue-500 ">
-        <GoogleIcon color="secondary" className="mr-2  bg-black rounded-2xl" /> Sign In with Google
-      </Button>
-    </Box>
+          <Box className="text-center">
+            <Button
+              onClick={() => signInWithGoogle("", { prompt: "select_account" })}
+              className="bg-blue-500 "
+            >
+              <GoogleIcon
+                color="secondary"
+                className="mr-2  bg-black rounded-2xl"
+              />{" "}
+              Sign In with Google
+            </Button>
+          </Box>
         </Sheet>
       </main>
     </CssVarsProvider>
