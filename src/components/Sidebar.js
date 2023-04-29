@@ -51,7 +51,7 @@ const Sidebar = () => {
             className="flex w-full h-16 rounded-md rounded-l-3xl m-2  items-center gap-3 justify-start hover:bg-slate-200 active:bg-slate-400"
           >
             <Avatar className="bg-slate-300 w-6 h-6 m-2" />
-            <h2 className="lg:overflow-hidden sm:overflow-x-scroll md:overflow-x-scroll">
+            <h2 className="lg:overflow-hidden sm:overflow-x-scroll md:overflow-x-scroll no-scrollbar">
               {/* {chat.users} */}
               {getOtherEmail(chat.users, user)}
             </h2>
@@ -134,7 +134,7 @@ const Sidebar = () => {
           </Box>
         </Box>
       </div>
-      <Box className="h-5/6 overflow-y-scroll pl-3 overflow-x-hidden border-2 flex flex-col px-2 justify-start items-center">
+      <Box className="h-5/6 overflow-y-scroll pl-3 overflow-x-hidden border-2 flex flex-col px-2 justify-start items-center no-scrollbar">
         {chatList()}
       </Box>
     </div>
