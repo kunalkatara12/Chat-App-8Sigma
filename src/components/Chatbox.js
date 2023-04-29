@@ -8,7 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+import {  styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import {
   useCollectionData,
@@ -152,7 +152,7 @@ const Chatbox = () => {
     <Box className="w-3/4 h-full border-2 ">
       <HeadingChatBox email={getOtherEmail(chat?.users, user)} />
       {/* <Chats id={id} /> */}
-      <Box className="h-3/4 w-full flex flex-col p-4 overflow-y-scroll">
+      <Box className="h-3/4 w-full flex flex-col p-4 overflow-y-scroll no-scrollbar">
         {getMessage()}
       </Box>
       <MessageBox id={id} user={user} />
