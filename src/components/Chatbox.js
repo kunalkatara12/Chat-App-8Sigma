@@ -6,8 +6,10 @@ import {
   FormControl,
   Paper,
   TextField,
+  Typography,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import DoneAllRoundedIcon from "@mui/icons-material/DoneAllRounded";
 import {  styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import {
@@ -25,6 +27,7 @@ import {
 import { db, auth } from "../../utils/firebaseconfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import getOtherEmail from "../../utils/getOtherEmail";
+import moment from "moment"
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   textAlign: "start",
@@ -123,17 +126,21 @@ const Chatbox = () => {
   const q = query(collection(db, `chats/${id}/messages`), orderBy("timestamp"));
   const [messages] = useCollectionData(q);
   const [chat] = useDocumentData(doc(db, "chats", id));
-  console.log(chat);
+  // console.log(chat);
   console.log(messages);
   const getMessage = () =>
     messages?.map((msg) => {
       // console.log(msg.message)
       const sender = msg.sender === user.email;
-
+      function toDateTime(secs) {
+        var t = new Date(1970, 0, 1); // Epoch
+        t.setSeconds(secs);
+        return t;
+      }
       return (
         <Item
           key={Math.random()}
-          className="w-1/3 rounded-3xl mb-2 rounded-bl-none "
+          className="flex flex-col h-full rounded-3xl mb-2 rounded-bl-none "
           style={{
             alignSelf: `${sender ? "flex-end" : "flex-start"}`,
             backgroundColor: `${
@@ -143,7 +150,14 @@ const Chatbox = () => {
             borderBottomLeftRadius: `${sender ? "1.5rem" : "0px"}`,
           }}
         >
-          {msg.message}
+          <Typography className="m-2 font-bold flex justify-center items-center text-sm"> {msg.message}</Typography>
+        
+          <Box className="w-full h-full text-blue-500 flex justify-end items-end">
+            <p className=" text-gray-500 text-[10px] leading-4">
+              {moment(msg.timestamp.toDate()).format('LT')}
+            </p>
+            <DoneAllRoundedIcon className="text-sm" />
+          </Box>
         </Item>
       );
     });
@@ -154,6 +168,7 @@ const Chatbox = () => {
       {/* <Chats id={id} /> */}
       <Box className="h-3/4 w-full flex flex-col p-4 overflow-y-scroll no-scrollbar">
         {getMessage()}
+    
       </Box>
       <MessageBox id={id} user={user} />
     </Box>
