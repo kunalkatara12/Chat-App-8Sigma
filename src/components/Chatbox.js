@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useRef,useEffect } from "react";
 import {
   Avatar,
   Box,
@@ -34,7 +34,7 @@ const Item = styled(Paper)(({ theme }) => ({
   paddingLeft: "15px",
   paddingRight: "15px",
   color: theme.palette.text.secondary,
-  height: 60,
+  // height: 60,
   fontWeight: "bolder",
   lineHeight: "60px",
 }));
@@ -126,6 +126,7 @@ const Chatbox = () => {
   const q = query(collection(db, `chats/${id}/messages`), orderBy("timestamp"));
   const [messages] = useCollectionData(q);
   const [chat] = useDocumentData(doc(db, "chats", id));
+    const bottomOfChat = useRef();
   // console.log(chat);
   console.log(messages);
   const getMessage = () =>
@@ -138,7 +139,7 @@ const Chatbox = () => {
       return (
         <Item
           key={Math.random()}
-          className="flex flex-col h-full rounded-3xl mb-2 rounded-bl-none "
+          className="flex flex-col  rounded-3xl mb-2 rounded-bl-none "
           style={{
             alignSelf: `${sender ? "flex-end" : "flex-start"}`,
             backgroundColor: `${
@@ -162,6 +163,17 @@ const Chatbox = () => {
         </Item>
       );
     });
+  useEffect(
+    () =>
+    {setTimeout(
+        bottomOfChat.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        }),
+        100
+      )},
+    [messages]
+  );
 
   return (
     <Box className="w-3/4 h-full border-2 ">
@@ -169,6 +181,7 @@ const Chatbox = () => {
       {/* <Chats id={id} /> */}
       <Box className="h-3/4 w-full flex flex-col p-4 overflow-y-scroll no-scrollbar">
         {getMessage()}
+        <div ref={bottomOfChat}></div>
       </Box>
       <MessageBox id={id} user={user} />
     </Box>
