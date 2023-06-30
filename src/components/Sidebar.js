@@ -10,33 +10,45 @@ import { getRedirectResult, signOut } from "firebase/auth";
 import { auth, db } from "../../utils/firebaseconfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
-import { collection } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import getOtherEmail from "../../utils/getOtherEmail";
 import { redirect } from "next/dist/server/api-utils";
 import { useRouter } from "next/router";
 
 const Sidebar = () => {
-  // const [personalId, setPersonalId] = useState("");
-  // useEffect(()=>{
-  //   setPersonalId(props.userId);
-  // },[])
+  const [newEmail, setNewEmail] = useState("");
+  const onSetNewMail = (e) => {
+    e.preventDefault();
+    setNewEmail(e.target.value);
+  };
+
+  const emailExists = (email) =>
+    chats?.find(
+      (chat) => chat.users.includes(user.email) && chat.users.includes(email)
+    );
 
   const [user] = useAuthState(auth);
   const [snapshot, loading, error] = useCollection(collection(db, "chats"));
-  // console.log(snapshot);
-  //  let chatList =[];
+
   const chats = snapshot?.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   console.log(chats);
-  //  console.log(chatList2)
-  //   for (let index = 0; index < 30; index++) {
-  //     chatList.push(<Chat />);
-  //   }
+
   const router = useRouter();
   const redirect = (id) => {
     router.push(`/chat/${id}`);
   };
-  // const chatExists=email=chatList?.find(chat=>(chat.users.includes(user.email)&&chat.users.includes(email)))
-
+  const addNewEmail = async () => {
+    if (!emailExists(newEmail) && newEmail != user.email && newEmail != "") {
+      await addDoc(collection(db, "chats"), { users: [user.email, newEmail] });
+    } else if (newEmail == user.email) {
+      alert("This is your email");
+    } else if (newEmail === "") {
+      alert("enter valid email");
+    } else {
+      alert(`${newEmail} already exists`);
+    }
+    setNewEmail("");
+  };
   const chatList = () => {
     // if(!getOtherEmail(chat.users,user)){
 
@@ -92,6 +104,8 @@ const Sidebar = () => {
               autoComplete="on"
             >
               <TextField
+                value={newEmail}
+                onChange={onSetNewMail}
                 id="outlined-basic"
                 type="email"
                 label=""
@@ -102,11 +116,12 @@ const Sidebar = () => {
               <Button
                 variant="contained"
                 size="small"
+                onClick={addNewEmail}
                 style={{ backgroundColor: "grey" }}
                 endIcon={<SendIcon className="w-3" />}
               ></Button>
             </Box>
-            <Box
+            {/* <Box
               className="m-1 flex"
               component="form"
               sx={{
@@ -130,7 +145,7 @@ const Sidebar = () => {
                 style={{ backgroundColor: "green" }}
                 endIcon={<HowToRegIcon />}
               ></Button>
-            </Box>
+            </Box> */}
           </Box>
         </Box>
       </div>
