@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import DoneAllRoundedIcon from "@mui/icons-material/DoneAllRounded";
-import {  styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import {
   useCollectionData,
@@ -27,7 +27,7 @@ import {
 import { db, auth } from "../../utils/firebaseconfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import getOtherEmail from "../../utils/getOtherEmail";
-import moment from "moment"
+import moment from "moment";
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   textAlign: "start",
@@ -132,11 +132,9 @@ const Chatbox = () => {
     messages?.map((msg) => {
       // console.log(msg.message)
       const sender = msg.sender === user.email;
-      function toDateTime(secs) {
-        var t = new Date(1970, 0, 1); // Epoch
-        t.setSeconds(secs);
-        return t;
-      }
+      // console.log(typeof msg.timestamp.toDate());
+      // const timeObj = msg.timestamp.toDate();
+
       return (
         <Item
           key={Math.random()}
@@ -150,11 +148,14 @@ const Chatbox = () => {
             borderBottomLeftRadius: `${sender ? "1.5rem" : "0px"}`,
           }}
         >
-          <Typography className="m-2 font-bold flex justify-center items-center text-sm"> {msg.message}</Typography>
-        
+          <Typography className="m-2 font-bold flex justify-center items-center text-sm">
+            {" "}
+            {msg.message}
+          </Typography>
+
           <Box className="w-full h-full text-blue-500 flex justify-end items-end">
             <p className=" text-gray-500 text-[10px] leading-4">
-              {moment(msg.timestamp.toDate()).format('LT')}
+              {msg.timestamp && moment(msg.timestamp.toDate()).format("LLL")}
             </p>
             <DoneAllRoundedIcon className="text-sm" />
           </Box>
@@ -168,7 +169,6 @@ const Chatbox = () => {
       {/* <Chats id={id} /> */}
       <Box className="h-3/4 w-full flex flex-col p-4 overflow-y-scroll no-scrollbar">
         {getMessage()}
-    
       </Box>
       <MessageBox id={id} user={user} />
     </Box>
